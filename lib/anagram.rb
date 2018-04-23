@@ -32,11 +32,26 @@ class TestForAnagram < Test::Unit::TestCase
     assert_equal false, Anagram.new("deed", "dead").match
     assert_equal true, Anagram.new("A decimal point", "I'm a dot in place").match
   end
+
+  def test_for_missing_params
+    error = assert_raises RuntimeError do
+      Anagram.new(nil, "Word").match
+    end
+    assert_match /First parameter is missing/, error.message
+
+    error = assert_raises RuntimeError do
+      Anagram.new("Word", nil).match
+    end
+    assert_match /Second parameter is missing/, error.message
+  end
 end
 
 class Anagram
   attr_reader :first, :second
   def initialize(first, second)
+    raise RuntimeError.new("First parameter is missing") unless first
+    raise RuntimeError.new("Second parameter is missing") unless second
+
     @first = first
     @second = second
   end
