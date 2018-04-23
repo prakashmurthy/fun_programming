@@ -69,11 +69,7 @@ class Mapper
   end
 
   def value
-    product = 1
-    word.scan(/\w/).each do |letter|
-      product = product * mapped_value(letter)
-    end
-    product
+    word.scan(/\w/).inject(1) { |product, letter| product * mapped_value(letter) }
   end
 
   def mapped_value(letter)
